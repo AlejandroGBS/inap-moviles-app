@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import { render } from '@testing-library/react';
+import LocationList from './components/locations';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function BoardApp() {
   return (
     <div className='board-game'>
       <Board />
+      <LocationList />
     </div>
   );
 }
