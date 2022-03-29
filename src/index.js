@@ -6,15 +6,25 @@ import { ThemeProvider } from "react-jss";
 import Routes from "./routes/index";
 import Theme from "./resources/Theme";
 import "./styles.css"
+import { HashRouter } from "react-router-dom";
 
-const rootElement = document.getElementById("root");
-ReactDOM.render(
-  <ThemeProvider theme={Theme}>
-    <StrictMode>
-      <BrowserRouter>
-        <Routes />
-      </BrowserRouter>
-    </StrictMode>
-  </ThemeProvider>,
-  rootElement
-);
+const starApp = () =>{
+  ReactDOM.render(
+    <ThemeProvider theme={Theme}>
+      <StrictMode>
+        <HashRouter>
+          <Routes />
+        </HashRouter>
+      </StrictMode>
+    </ThemeProvider>,
+    document.getElementById("root")
+  );
+}
+
+if(!window.cordova){
+  alert("caca")
+  starApp()
+}else{
+  document.addEventListener("deviceready",starApp,false)
+}
+
