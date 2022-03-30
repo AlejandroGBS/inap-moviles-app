@@ -1,53 +1,56 @@
 import "./styles.css";
-import React, { useState } from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { Modal } from "./components/Modal";
-import { Menu } from "./components/Menu";
-import { ReactDimmer } from "react-dimmer";
-import { Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
+import React from "react";
+
+
+function onSuccesPosition(position) {
+  alert('Latitude: '          + position.coords.latitude          + '\n' +
+        'Longitude: '         + position.coords.longitude         + '\n' +
+        'Altitude: '          + position.coords.altitude          + '\n' +
+        'Accuracy: '          + position.coords.accuracy          + '\n' +
+        'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+        'Heading: '           + position.coords.heading           + '\n' +
+        'Speed: '             + position.coords.speed             + '\n' +
+        'Timestamp: '         + position.timestamp                + '\n');
+};
+
+// onError Callback receives a PositionError object
+//
+function onErrorPosition(error) {
+  alert('code: '    + error.code    + '\n' +
+        'message: ' + error.message + '\n');
+}
 
 export default function App() {
-  const [isModalOpen, setModal] = useState(false);
-  const [isMenuOpen, setMenu] = useState(false);
-
-  const handleClick = () => {
-    setModal((prevState) => !prevState);
-  };
-
-  const handleMenu = () => {
-    setMenu((prevState) => !prevState);
-  };
 
   return (
     <>
       <div className="app">
         <div className="header">
-          <GiHamburgerMenu className="menu-btn" onClick={handleMenu} />
           <h1>Ancora S.L.</h1>
           <div className="nav"></div>
         </div>
 
         <div className="body">
-          <button onClick={handleClick}>Open Modal</button>
+        <button onClick={()=>{
+      if(window.cordova){
+        if(window.cordova.plugins){
+          try{
+            navigator.geolocation.getCurrentPosition(onSuccesPosition,onErrorPosition);
+            alert("si window.cordova.plugins")
+          }catch(error){
+            alert(error)
+          }
+
+
+        }else{
+          alert("no window.cordova.plugins")
+        }
+      }else{
+        alert("no window.cordova")
+      }  
+    }}>probar gps</button>
         </div>
       </div>
-
-      {isModalOpen && <Modal closeModal={setModal} />}
-      <Menu isMenuOpen={isMenuOpen} />
-
-      <ReactDimmer
-        isOpen={isModalOpen}
-        exitDimmer={setModal}
-        zIndex={100}
-        blur={1.5}
-      />
-      <ReactDimmer
-        isOpen={isMenuOpen}
-        exitDimmer={setMenu}
-        zIndex={100}
-        blur={1.5}
-      />
     </>
   );
 }

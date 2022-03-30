@@ -41,62 +41,61 @@ const useStyles = createUseStyles({
   }
 });
 
-function DashboardComponent() {
-  const classes = useStyles();
-  return (
-    <Column>
-      <Row
-        className={classes.cardsContainer}
-        wrap
-        flexGrow={1}
-        horizontal="space-between"
-        breakpoints={{ 768: "column" }}
-      >
-        <Row
-          className={classes.cardRow}
-          wrap
-          flexGrow={1}
-          horizontal="space-between"
-          breakpoints={{ 384: "column" }}
-        ></Row>
-        <Row
-          className={classes.cardRow}
-          wrap
-          flexGrow={1}
-          horizontal="space-between"
-          breakpoints={{ 384: "column" }}
-        ></Row>
-      </Row>
-      <div className={classes.todayTrends}>{probarGeo}</div>
-      <Row
-        horizontal="space-between"
-        className={classes.lastRow}
-        breakpoints={{ 1024: "column" }}
-      ></Row>
-    </Column>
-  );
-}
+var watchId;
 
 function probarGeo(){
-  navigator.geolocation.getCurrentPosition(onSuccesPosition,onErrorPosition);
+  if(window.cordova){
+    if(window.cordova.plugins){
+      watchId = navigator.geolocation.watchPosition(onSuccessPosition,onErrorPosition, { timeout: 30000 });
+    }else{
+      alert("no window.cordova.plugins")
+    }
+  }else{
+    alert("no window.cordova")
+  }  
 }
 
-var onSuccesPosition = function(position) {
-  alert('Latitude: '          + position.coords.latitude          + '\n' +
-        'Longitude: '         + position.coords.longitude         + '\n' +
-        'Altitude: '          + position.coords.altitude          + '\n' +
-        'Accuracy: '          + position.coords.accuracy          + '\n' +
-        'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-        'Heading: '           + position.coords.heading           + '\n' +
-        'Speed: '             + position.coords.speed             + '\n' +
-        'Timestamp: '         + position.timestamp                + '\n');
-};
+function onSuccessPosition(position) {
+  var element = document.getElementById('geolocation');
+  element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
+                      'Longitude: ' + position.coords.longitude     + '<br />' +
+                      '<hr />'      + element.innerHTML;
+}
 
 // onError Callback receives a PositionError object
 //
 function onErrorPosition(error) {
   alert('code: '    + error.code    + '\n' +
         'message: ' + error.message + '\n');
+}
+
+
+function DashboardComponent() {
+  const classes = useStyles();
+  return (
+    <>
+    <button onClick={()=>navigator.geolocation.clearWatch(watchId)}>parar gps</button>
+    <button onClick={()=>{
+      if(window.cordova){
+        if(window.cordova.plugins){
+          try{
+            probarGeo();
+            alert("si window.cordova.plugins")
+          }catch(error){
+            alert(error)
+          }
+
+
+        }else{
+          alert("no window.cordova.plugins")
+        }
+      }else{
+        alert("no window.cordova")
+      }  
+    }}>probar gps</button>
+    <div id="geolocation"></div>
+    </>
+  );
 }
 
 export default DashboardComponent;
