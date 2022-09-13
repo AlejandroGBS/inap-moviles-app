@@ -1,6 +1,6 @@
 {
-  "name": "io.cordova.hellocordova",
-  "displayName": "HelloCordova",
+  "name": "gb.alejandro.ancora",
+  "displayName": "Ancora SL",
   "version": "1.0.0",
   "description": "A sample Apache Cordova application that responds to the deviceready event.",
   "main": "index.js",
@@ -25,7 +25,8 @@
     "prop-types":"15.8.1",
     "react-jss":"10.9.0",
     "simple-flexbox":"2.3.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "react-bootstrap": "2.3.0"
   },
   "browserslist": {
     "production": [

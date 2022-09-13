@@ -4,6 +4,7 @@ import URLS from "../resources/Urls";
 import LoadingComponent from "../components/loading";
 
 const DashboardComponent = lazy(() => import("./dashboard/index"));
+const reportNew = lazy(()=> import("../pages/reportNew"));
 
 function PrivateRoutes() {
   return (
@@ -21,7 +22,7 @@ function PrivateRoutes() {
           render={() => <div>overviewThree</div>}
         />
         <Route exact path={URLS.overview} render={() => <div>overview</div>} />
-        <Route exact path={URLS.tickets} render={() => <div>tickets</div>} />
+        <Route exact path={URLS.newReport} render={() => <div>new report</div>} />
         <Route exact path={URLS.ideasTwo} render={() => <div>ideasTwo</div>} />
         <Route
           exact
